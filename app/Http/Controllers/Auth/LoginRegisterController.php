@@ -81,7 +81,7 @@ class LoginRegisterController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('home');
+            return view('auth.home');
         }
 
         return back()->withErrors([

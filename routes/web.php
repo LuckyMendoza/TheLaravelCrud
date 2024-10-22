@@ -16,10 +16,6 @@ use App\Http\Controllers\Auth\VerificationController;
 |
 */
 
-//home 
-Route::view('/home', function(){
-    return view('layout.home');
-} );
 
 
 
@@ -28,17 +24,17 @@ Route::controller(LoginRegisterController::class)->group(function(){
     Route::get('/register', 'register' )->name('register');
     Route::post('/store', 'store' )->name('store');
     Route::get('/login', 'login' )->name('login');
-    Route::get('/authenticate', 'authenticate' )->name('authenticate');
-    // Route::get('/home', 'home' )->name('home');
-    Route::get('/logout', 'logout' )->name('logout');
+    Route::post('/authenticate', 'authenticate' )->name('authenticate');
+    Route::get('/home', 'home' )->name('home');
+    Route::post('/logout', 'logout' )->name('logout');
 
 });
 
 //define verification email
 Route::controller(VerificationController::class)->group(function(){
     Route::get('/email/verify', 'notice')->name('verification.notice');
-    Route::get('/email/verify{id}/{hash}', 'verify')->name('verification.veify');
-    Route::get('/email/resend', 'resend')->name('verification.resend');
+    Route::get('/email/verify{id}/{hash}', 'verify')->name('verification.verify');
+    Route::post('/email/resend', 'resend')->name('verification.resend');
 
 });
 

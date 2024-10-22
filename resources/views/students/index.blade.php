@@ -6,7 +6,6 @@ Index Laravel Crud
 
 
 
-
 <div class="container-table">
   <div class="table-wrapper">
     <table>
@@ -48,7 +47,7 @@ Index Laravel Crud
             <form action="{{ route('student.delete', $students->id) }}" method="POST" style="display:inline;">
               @csrf
               @method('DELETE')
-              <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-init data-mdb-ripple-color="dark">
+               <button type="submit" class="btn btn-outline-danger" data-mdb-ripple-init data-mdb-ripple-color="dark">
                 Delete
               </button>
             </form>

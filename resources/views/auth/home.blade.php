@@ -1,12 +1,18 @@
-<!DOCTYPE html>
-<html lang="fi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>tets</h1>
-</body>
-</html>
+@extends('auth.layouts')
+
+@section('content')
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">Home</div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    You are logged in!
+                </div>   
+            </div>
+        </div>
+    </div>    
+</div>
+    
+@endsection
