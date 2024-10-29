@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use  Illuminate\Auth\Events\Registered;
+use Laravel\Socialite\Facades\Socialite;
+use App\Providers\RouteServiceProvider;
 
 class LoginRegisterController extends Controller
 {
@@ -17,9 +19,35 @@ class LoginRegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except(['logout', 'home' ]);
+        $this->middleware('guest')->except(['logout' ]);
         $this->middleware('auth')->only('logout', 'home');
         $this->middleware('verified')->only('home');
+    }
+
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+
+    public function handleGoogleCallback()
+    {
+        $googleUser = Socialite::driver('google')->user();
+        $user = User::where('email', $googleUser->email)->first();
+        if(!$user)
+        {
+            $user = User::create(['name' => $googleUser->name, 
+            'email' => $googleUser->email, 
+            'password' => Hash::make(mt_rand(100000, 999999)) // Using mt_rand instead of rand
+        ]);
+        }
+
+        Auth::login($user);
+
+        return view('auth.home');
+        
+   
     }
 
     /**
@@ -27,6 +55,9 @@ class LoginRegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function register()
     {
         return view('auth.register');

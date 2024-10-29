@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,8 @@ use App\Http\Controllers\Auth\VerificationController;
 |
 */
 
-
+// Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
+// Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
 
 //LOGIN REGISTER CONTROLLER
@@ -27,6 +30,8 @@ Route::controller(LoginRegisterController::class)->group(function(){
     Route::post('/authenticate', 'authenticate' )->name('authenticate');
     Route::get('/home', 'home' )->name('home');
     Route::post('/logout', 'logout' )->name('logout');
+    Route::get('/google/redirect','redirectToGoogle')->name('google.redirect');
+    Route::get('/google/callback ','handleGoogleCallback')->name('google.callback');
 
 });
 
@@ -48,3 +53,15 @@ Route::controller(StudentController::class)->group(function(){
     Route::get('/student-edit/{student}', 'edit')->name('student.edit');
     Route::put('/student-update/{student}',  'update')->name('student.update');
 });
+
+// Forgot Password Routes
+Route::controller(ForgotPasswordController::class)->group(function () {
+    Route::get('/forgot-password', 'showLinkRequestForm')->name('password.request');
+    Route::post('/forgot-password', 'sendResetLinkEmail')->name('password.email');
+});
+
+// Reset Password Routes
+Route::controller(ResetPasswordController::class)->group(function () {
+    Route::get('/reset-password/{token}', 'showResetForm')->name('password.reset');
+    Route::post('/reset-password', 'reset')->name('password.update');
+}); 
