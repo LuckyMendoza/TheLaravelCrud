@@ -4,57 +4,74 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-Use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Models\EmailOTP;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Auth\LoginRegisterController;
 
 class VerificationController extends Controller
 {
-    /**
-     * Instantiate a new VerificationController instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
-    }
+
+   protected $loginRegisterController;
 
 
-     /**
-     * Display an email verification notice.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   public function __construct(LoginRegisterController $loginRegisterController)
+   {
+      $this->middleware('auth');
+      $this->middleware('throttle:6,1')->only('verify', 'resend');
+      $this->loginRegisterController = $loginRegisterController;
+   }
 
-     public function notice(Request $request)
-     {
-        return $request->user()->hasVerifiedEmail()
-        ? view('auth.home') : view('auth.verify-email');
-     }
+   /**
+    * Display OTP verification form
+    */
+   public function notice(Request $request)
+   {
+      return $request->user()->hasVerifiedEmail()
+         ? view('auth.home')
+         : view('auth.verify-email');
+   }
 
-  /**
-     * User's email verificaiton.
-     *
-     * @param  \Illuminate\Http\EmailVerificationRequest $request
-     * @return \Illuminate\Http\Response
-     */
+  
+   /**
+    * Verify OTP
+    */
+   public function verify(Request $request)
+   {
+      $request->validate([
+         'otp' => 'required|digits:6'
+      ]);
 
-     public function verify(EmailVerificationRequest $request)
-     {
-        $request->fulfill();
-        return view('auth.home');
-     }
- /**
-     * Resent verificaiton email to user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+      $user = $request->user();
+      $emailOTP = EmailOTP::where('email', $user->email)
+         ->where('otp', $request->otp)
+         ->where('expires_at', '>', Carbon::now())
+         ->first();
 
-     public function resend(Request $request)
-     {
-        $request->user()->sendEmailVerificationNotification();
-        return back()
-        ->withSuccess('A fresh verification link has been sent to your email address.');
-     }
+      if (!$emailOTP) {
+         return back()->withErrors(['otp' => 'Invalid or expired OTP.']);
+      }
 
+      // Mark email as verified
+      $user->markEmailAsVerified();
+
+      // Delete used OTP
+      $emailOTP->delete();
+
+      return view('auth.home');
+   }
+
+   /**
+    * Resend OTP
+    */
+   // public function resend(Request $request)
+   // {
+   //    return $this->sendOTP($request);
+   // }
+   public function resend(Request $request)
+   {
+       $user = $request->user();
+       $this->loginRegisterController->sendOTP($user);
+       return back()->withSuccess('OTP has been resent to your email address.');
+   }
 }
