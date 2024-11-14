@@ -23,9 +23,9 @@ class LoginRegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except(['logout']);
-        $this->middleware('auth')->only('logout', 'home');
-        $this->middleware('verified')->only('home');
+        // $this->middleware('guest')->except(['logout']);
+        // $this->middleware('auth')->only('logout', 'home');
+        // $this->middleware('verified')->only('home');
     }
 
 
@@ -129,10 +129,6 @@ class LoginRegisterController extends Controller
     }
 
 
-
-
-
-
     /**
      * Display a login form.
      *
@@ -153,7 +149,7 @@ class LoginRegisterController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return view('auth.home');
+           return redirect()->route('student')->with('success', 'Successfully Login');
         }
 
         return back()->withErrors([

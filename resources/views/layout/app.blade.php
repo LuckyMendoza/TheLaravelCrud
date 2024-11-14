@@ -46,7 +46,7 @@
 
 
   <x-alert />
- 
+  <x-login-alert />
   
 
   <script src="{{asset('assets/viewprofile.js')}}" type="text/javascript"></script>

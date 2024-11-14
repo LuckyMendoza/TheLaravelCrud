@@ -1,47 +1,53 @@
 @extends('auth.layouts')
+@section('title', 'Verify Email')
 
-@section('content')
-<div class="row justify-content-center mt-5">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">Verify Your Email Address</div>
-            <div class="card-body">
-                @if ($message = Session::get('success'))
-                    <div class="alert alert-success" role="alert">
-                        {{ $message }}
-                    </div>
-                @endif
 
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
-                <form method="POST" action="{{ route('verification.verify') }}">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="otp" class="form-label">Enter OTP sent to your email</label>
-                        <input type="text" class="form-control" id="otp" name="otp" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Verify OTP</button>
-                </form>
+<div class="container">
+    @if ($message = Session::get('success'))
+    <div class="alert alert-success">
+        {{ $message }}
+    </div>
+    @endif
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+        {{ $error }}<br>
+        @endforeach
+    </div>
+    @endif
 
-                <p class="mt-3">
-                    Didn't receive the OTP? 
-                    <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
-                            Click here to request another
-                        </button>
-                    </form>
-                </p>
-            </div>
+    <header>Email Verification</header>
+
+    <div class="verification-text">
+        Please enter the 6-digit code sent to your email address
+    </div>
+
+    <form action="{{ route('verification.verify') }}" method="post">
+        @csrf
+        <div class="otp-container">
+            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <input type="hidden" name="otp" id="otp-hidden">
         </div>
+
+        <div class="button">
+            <div class="inner"></div>
+            <button type="submit">Verify OTP</button>
+        </div>
+    </form>
+
+    <div class="verification-text">
+        Didn't receive the code?
+        <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+            @csrf
+            <button type="submit" class="resend-link">
+                Resend Code
+            </button>
+        </form>
     </div>
 </div>
-@endsection
