@@ -1,0 +1,14 @@
+<!----------My To Do List in Laravel Basic Function List Analysis------------------------------>
+1. Homepage 
+  ✅Sa Homepage Simple Lang Dapat Accesible Siya sa Lahat ✔️
+2.Login And Registration 
+  ✅ Dapat my session after  login and registration or logout
+  ✅ Hindi dapat accesible yung dashbaord sa url kelangan my middleware
+  ✅Ayusin yung google button ✔️
+3. Dashboard Featured 
+  ✅Dapat sa  dashboard my restricted ung mga naka register at login lang ang my accces
+  ✅Kahit sino pwde mag add,delete, edit , kase basic function lang naman 
+  ✅Dito sa dashboard possible na merong qr code 
+  ✅Sa qr code  nato kapag ni scan mag didisplay ung user impormation 
+  ✅My search function den dapat 
+  ✅and meron datatable ,sa datatable merong zip code ,Full name , email,contact, address, 

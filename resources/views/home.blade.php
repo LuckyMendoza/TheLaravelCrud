@@ -11,7 +11,7 @@
 
 </head>
 
-<body>
+<body>   
   <!-- partial:index.partial.html  -->
   <section>
     <div class="container">
@@ -37,7 +37,7 @@
                       "Build a Solid Laravel Foundation: Learn the essentials—CRUD functionality, user registration,
                       Google login, and dashboards. Elevate your skills and start creating powerful, user-friendly
                       applications with ease."
-                    </p>
+                    </p> 
                     <i class="fas fa-disease slowfloat3s"></i>
 
                     <!-- Centered Button with Custom Width -->
@@ -52,7 +52,7 @@
           </div>
         </div>
 
-
+==
       </div>
     </div>
   </section>

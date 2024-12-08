@@ -27,7 +27,7 @@
             @endif
             <label>Email Address</label>
         </div>
-  
+
         <div class="input-field">
             <input type="password" class="pswrd @error('password') is-invalid @enderror" id="password" name="password">
             @if ($errors->has('password'))
@@ -45,7 +45,7 @@
         <div class="button">
             <div class="inner"></div>
             <button type="submit" value="submit">REGISTER</button>
-        </div>              
+        </div>
     </form>
 
     <div class="auth">Or register with</div>
@@ -72,3 +72,4 @@
 
     <div class="signup">Already have an account? <a href="{{ route('login') }}">Login here</a></div>
 </div>
+

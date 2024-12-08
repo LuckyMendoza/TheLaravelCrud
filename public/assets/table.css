@@ -8,6 +8,7 @@ html, body {
     position: relative;
     width: 1000px; /* Increased width */
     margin: 0 auto;
+    margin-top: 80px;
 }
 
 .table-wrapper {

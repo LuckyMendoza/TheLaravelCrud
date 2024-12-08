@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="stylesheet" href="{{asset('/dist/style.css')}}" />
   <link rel="stylesheet" href="{{asset('/assets/table.css')}}" />
+  
   {{--
   <link rel="stylesheet" href="sweetalert2.min.css"> --}}
   <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.min.css" rel="stylesheet">
@@ -21,7 +22,7 @@
   <style>
     .title {
       position: absolute;
-      top: 50px;
+      top: 30px;
       /* Adjust this value to position the title closer or further from the top */
       left: 50%;
       transform: translateX(-50%);
@@ -33,6 +34,7 @@
       -webkit-text-fill-color: transparent;
       text-align: center;
       /* Center the text horizontally */
+    
     }
   </style>
 
@@ -46,7 +48,7 @@
 
 
   <x-alert />
-  <x-login-alert />
+
   
 
   <script src="{{asset('assets/viewprofile.js')}}" type="text/javascript"></script>

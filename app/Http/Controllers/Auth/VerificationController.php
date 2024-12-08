@@ -27,12 +27,15 @@ class VerificationController extends Controller
     */
    public function notice(Request $request)
    {
-      return $request->user()->hasVerifiedEmail()
-         ? view('auth.home')
-         : view('auth.verify-email');
+
+      if ($request->user()->hasVerifiedEmail()) {
+         return redirect()->route('student')->with('success', 'Verification success!');
+      } else {
+         return redirect()->route('verification.verify')->with('success', 'Verification success!');
+      }
    }
 
-  
+
    /**
     * Verify OTP
     */
@@ -64,14 +67,11 @@ class VerificationController extends Controller
    /**
     * Resend OTP
     */
-   // public function resend(Request $request)
-   // {
-   //    return $this->sendOTP($request);
-   // }
+  
    public function resend(Request $request)
    {
-       $user = $request->user();
-       $this->loginRegisterController->sendOTP($user);
-       return back()->withSuccess('OTP has been resent to your email address.');
+      $user = $request->user();
+      $this->loginRegisterController->sendOTP($user);
+      return back()->withSuccess('OTP has been resent to your email address.');
    }
 }

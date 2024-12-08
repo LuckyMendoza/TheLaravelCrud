@@ -57,12 +57,11 @@ class StudentController extends Controller
                 'message' => $request->message,
             ]);
 
-            return redirect()->route('student.index')->with('success', 'Student created successfully!');
+            return redirect()->route('student.index')->with('success', 'Data created successfully!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Something went wrong!');
         }
     }
-
 
 
     /**
@@ -98,7 +97,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-   
+
         try {
             $student->update([
                 'firstName' => $request->firstName,
@@ -123,12 +122,27 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-      try{
-        $student->delete();
-        return redirect()->back()->with('delete', 'Data Successfully Deleted');
-      }catch(\Throwable $th){
-        return redirect()->back()->with('error', 'Error!');
-      }
+        try {
+            $student->delete();
+            return redirect()->back()->with('delete', 'Data Successfully Deleted');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Error!');
+        }
+    }
 
+    /**
+     * Show the user search
+     *
+     *  @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Student  $student
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $student = Student::where('firstName', 'like', "%$search%")
+            ->orWhere('lastName', 'like', "%$search%")
+            ->get();
+        return view('students.index', compact('student'));
     }
 }
