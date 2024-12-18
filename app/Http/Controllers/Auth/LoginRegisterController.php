@@ -24,9 +24,9 @@ class LoginRegisterController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('guest')->except(['logout']);
-        // $this->middleware('auth')->only('logout', 'home');
-        // $this->middleware('verified')->only('home');
+        $this->middleware('guest')->except(['logout']);
+        $this->middleware('auth')->only('logout', 'home');
+        $this->middleware('verified')->only('home');
     }
 
 
@@ -70,7 +70,7 @@ class LoginRegisterController extends Controller
             $request->validate([
                 'name' => 'required|string|max:250',
                 'email' => 'required|string|email:rfc,dns|max:250|unique:users,email',
-                'password' => 'required|string|min:8|confirmed'
+                'password' => 'required|string|min:8|c  onfirmed'
             ]);
 
             $user = User::create([

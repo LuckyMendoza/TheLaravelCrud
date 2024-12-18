@@ -14,6 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('studentAddress').textContent = data.address;
                 document.getElementById('studentEmail').textContent = data.email;
                 document.getElementById('studentMessage').textContent = data.message;
+
+                var avatarImg = document.getElementById('studentAvatar');
+                if (data.avatar) {
+                    avatarImg.src = '/storage/avatars/' + data.avatar;
+                    avatarImg.style.display = 'block';
+                } else {
+                    avatarImg.style.display = 'none';
+                }
+
             });
     });
 });

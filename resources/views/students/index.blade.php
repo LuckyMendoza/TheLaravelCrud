@@ -26,11 +26,12 @@
                     <th>Address</th>
                     <th>Email</th>
                     <th>Message</th>
+                    <th>Profile</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @if(isset($student) && $student->isNotEmpty())
+                @if($student->count() > 0)
                     @foreach ($student as $students)
                         <tr>
                             <td>{{ $students->firstName }}</td>
@@ -38,6 +39,14 @@
                             <td>{{ $students->address }}</td>
                             <td>{{ $students->email }}</td>
                             <td>{{ $students->message }}</td>
+                            <td>
+                                @if ($students->avatar)
+                                    <img src="{{ asset('storage/avatars/' . $students->avatar) }}" class="img-fluid rounded-circle mb-3"  alt="Avatar" width="50">
+                                @else
+                                    <span>No Image</span>
+                                @endif
+                            </td>
+                            
                             <td>
                                 <!-- View Button -->
                                 <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#viewStudentModal"
@@ -87,7 +96,9 @@
                 <h1 class="modal-title fs-5" id="viewStudentModalLabel">Student Profile</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body ">
+                <img id="studentAvatar" src="" alt="Student Avatar" class="img-fluid rounded-circle mb-3" style="max-width: 100px; display: none;">
+
                 <p><strong>First Name:</strong> <span id="studentFirstName"></span></p>
                 <p><strong>Last Name:</strong> <span id="studentLastName"></span></p>
                 <p><strong>Address:</strong> <span id="studentAddress"></span></p>

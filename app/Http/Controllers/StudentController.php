@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 
 class StudentController extends Controller
@@ -94,25 +95,57 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
+     
+     
      */
     public function update(Request $request, Student $student)
     {
-
+        $this->validate($request, [
+            'firstName' => 'required|string|min:3',
+            'lastName' => 'required|string|min:3',
+            'address' => 'required',
+            'email' => 'required|email|unique:students,email,' . $student->id,
+            'message' => 'required|min:5',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
+        ]);
         try {
+            // Handle file upload
+            if ($request->hasFile('avatar')) {
+                // Delete old avatar if exists
+                if ($student->avatar && Storage::exists('public/' . $student->avatar)) {
+                    Storage::delete('public/' . $student->avatar);
+                }
+                
+                // Get the original file extension
+                $extension = $request->file('avatar')->getClientOriginalExtension();
+                
+                // Generate a unique filename with the original extension
+                $fileName = uniqid() . '.' . $extension;
+                
+                // Store the file with the new unique filename
+                $avatarPath = $request->file('avatar')->storeAs('avatars', $fileName, 'public');
+                
+                $student->avatar = $fileName; // Store the new filename
+            }
+            
             $student->update([
                 'firstName' => $request->firstName,
                 'lastName' => $request->lastName,
                 'address' => $request->address,
                 'email' => $request->email,
                 'message' => $request->message,
+                'avatar' => $student->avatar, // Save the avatar path
             ]);
-            //   return redirect()->route('student.index')->with('success', 'Successfully Updated!');
-
+            
             return redirect()->route('student.index')->with('success', 'Data has been Updated successfully!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Something went wrong!');
         }
     }
+    
+
+
+    
 
     /**
      * Remove the specified resource from storage.
